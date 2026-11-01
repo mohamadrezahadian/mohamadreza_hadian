@@ -20,7 +20,7 @@ body {
     background: #111213;
     color: #eeeeee;
     font-family: Tahoma, Arial, sans-serif;
-    transition: background .3s, color .3s;
+    transition: background .3s ease, color .3s ease;
 }
 
 body.light {
@@ -54,6 +54,7 @@ button {
     padding: 10px 15px;
     cursor: pointer;
     font-family: inherit;
+    transition: opacity .2s ease;
 }
 
 button:hover {
@@ -76,6 +77,7 @@ h1 {
     font-weight: 400;
     font-size: clamp(34px, 6vw, 76px);
     margin: 20px 0 26px;
+    line-height: 1.5;
 }
 
 .intro {
@@ -98,7 +100,6 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: zoom-in;
 }
 
 .photo img {
@@ -107,11 +108,18 @@ h1 {
     height: auto;
     max-height: 85vh;
     object-fit: contain;
-    transition: opacity .3s;
+    cursor: zoom-in;
+    transition: opacity .3s ease;
 }
 
 .photo img:hover {
     opacity: .92;
+}
+
+/* Image loading error */
+
+.photo.image-error {
+    display: none;
 }
 
 /* Lightbox */
@@ -119,7 +127,7 @@ h1 {
 .lightbox {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,.96);
+    background: rgba(0, 0, 0, .96);
     display: none;
     align-items: center;
     justify-content: center;
@@ -135,6 +143,8 @@ h1 {
 .lightbox img {
     max-width: 100%;
     max-height: 90vh;
+    width: auto;
+    height: auto;
     object-fit: contain;
 }
 
@@ -146,6 +156,7 @@ h1 {
     border: none;
     font-size: 32px;
     padding: 5px 12px;
+    cursor: pointer;
 }
 
 footer {
@@ -155,7 +166,10 @@ footer {
     opacity: .7;
 }
 
+/* Mobile */
+
 @media (max-width: 700px) {
+
     header {
         padding: 18px 5%;
     }
@@ -188,17 +202,24 @@ footer {
 <body>
 
 <header>
+
     <a href="../../index.html" id="back"></a>
 
     <div class="controls">
+
         <button id="theme" type="button"></button>
+
         <button id="lang" type="button">EN</button>
+
     </div>
+
 </header>
 
 <main>
 
-    <div class="kicker">PHOTOGRAPHY SERIES / 01</div>
+    <div class="kicker">
+        PHOTOGRAPHY SERIES / 01
+    </div>
 
     <h1 id="title"></h1>
 
@@ -210,59 +231,115 @@ footer {
 
 <footer id="foot"></footer>
 
+<!-- Lightbox -->
+
 <div class="lightbox" id="lightbox">
-    <button class="close-lightbox" id="closeLightbox"
-        type="button" aria-label="Close">&times;</button>
+
+    <button
+        class="close-lightbox"
+        id="closeLightbox"
+        type="button"
+        aria-label="Close">
+        &times;
+    </button>
+
     <img id="lightboxImage" src="" alt="">
+
 </div>
 
 <script>
 
 let en = false;
 
+/* Persian content */
+
 const fa = {
+
     back: '← بازگشت به صفحه اصلی',
+
     title: 'آنچه بیرون قاب ماند',
+
     desc: 'این مجموعه میان مشاهده و تفسیر حرکت می‌کند؛ جایی که تصویر اطلاعاتی ناقص در اختیار ما می‌گذارد و ذهن، فاصله‌های میان آن‌ها را با داستان پر می‌کند. آنچه دیده نمی‌شود، شاید مهم‌ترین بخش روایت باشد؛ روایتی که در پایان تنها ردی از آن باقی می‌ماند، بی‌آنکه مبدأ یا مقصدش روشن باشد.',
+
     foot: '© ۲۰۲۶ محمدرضا هادیان'
+
 };
 
+/* English content */
+
 const eng = {
+
     back: '← Back to home',
+
     title: 'What Remained Outside the Frame',
+
     desc: 'This series moves between observation and interpretation, where the image offers incomplete information and the mind fills the gaps with a story. What remains unseen may be the most significant part of the narrative; in the end, only a trace remains, its origin and destination equally uncertain.',
+
     foot: '© 2026 Mohammadreza Hadian'
+
 };
+
 
 /* Generate 20 photographs */
 
 const gallery = document.getElementById('gallery');
 
+/*
+IMPORTANT:
+Image folder:
+images/outside-the-frame/
+
+File names:
+1.jpg to 20.jpg
+
+The page is assumed to be two folders
+below the project root.
+*/
+
+const imageFolder = '../../images/outside-the-frame/';
+
 for (let i = 1; i <= 20; i++) {
 
     const figure = document.createElement('figure');
+
     figure.className = 'photo';
 
     const img = document.createElement('img');
 
-    img.src = `../../images/outside-the-frame/${i}.jpg`;
+    img.src = imageFolder + i + '.jpg';
 
-    img.alt = `Photograph ${String(i).padStart(2, '0')}`;
+    img.alt = 'Photograph ' + i;
 
     img.loading = i <= 2 ? 'eager' : 'lazy';
 
+    img.decoding = 'async';
+
+    /* Open image */
+
     img.addEventListener('click', function() {
+
         document.getElementById('lightboxImage').src = this.src;
+
         document.getElementById('lightbox').classList.add('active');
+
     });
 
+    /* Handle missing images */
+
     img.addEventListener('error', function() {
+
         console.error('Image not found:', this.src);
+
+        figure.classList.add('image-error');
+
     });
 
     figure.appendChild(img);
+
     gallery.appendChild(figure);
+
 }
+
 
 /* Language */
 
@@ -271,11 +348,15 @@ function updateLanguage() {
     const content = en ? eng : fa;
 
     document.documentElement.lang = en ? 'en' : 'fa';
+
     document.documentElement.dir = en ? 'ltr' : 'rtl';
 
     document.getElementById('back').textContent = content.back;
+
     document.getElementById('title').textContent = content.title;
+
     document.getElementById('desc').textContent = content.desc;
+
     document.getElementById('foot').textContent = content.foot;
 
     document.getElementById('lang').textContent = en ? 'FA' : 'EN';
@@ -285,24 +366,33 @@ function updateLanguage() {
         : 'آنچه بیرون قاب ماند — محمدرضا هادیان';
 
     updateThemeLabel();
+
 }
+
+
+/* Theme label */
 
 function updateThemeLabel() {
 
     const light = document.body.classList.contains('light');
 
-    document.getElementById('theme').textContent =
-        light
+    document.getElementById('theme').textContent = light
         ? (en ? 'Dark mode' : 'حالت تیره')
         : (en ? 'Light mode' : 'حالت روشن');
+
 }
+
 
 /* Language button */
 
 document.getElementById('lang').addEventListener('click', function() {
+
     en = !en;
+
     updateLanguage();
+
 });
+
 
 /* Theme button */
 
@@ -313,39 +403,87 @@ document.getElementById('theme').addEventListener('click', function() {
     document.body.classList.toggle('light', light);
 
     try {
-        localStorage.setItem('hadian-theme', light ? 'light' : 'dark');
-    } catch (error) {}
+
+        localStorage.setItem(
+            'hadian-theme',
+            light ? 'light' : 'dark'
+        );
+
+    } catch (error) {
+
+        console.warn('Theme preference could not be saved.');
+
+    }
 
     updateThemeLabel();
+
 });
 
-/* Restore theme */
+
+/* Restore saved theme */
 
 try {
+
     if (localStorage.getItem('hadian-theme') === 'light') {
+
         document.body.classList.add('light');
+
     }
-} catch (error) {}
+
+} catch (error) {
+
+    console.warn('Saved theme could not be restored.');
+
+}
+
 
 /* Lightbox controls */
 
 const lightbox = document.getElementById('lightbox');
 
+const lightboxImage = document.getElementById('lightboxImage');
+
+
+/* Close button */
+
 document.getElementById('closeLightbox').addEventListener('click', function() {
+
     lightbox.classList.remove('active');
+
+    lightboxImage.src = '';
+
 });
+
+
+/* Close by clicking outside image */
 
 lightbox.addEventListener('click', function(event) {
+
     if (event.target === lightbox) {
+
         lightbox.classList.remove('active');
+
+        lightboxImage.src = '';
+
     }
+
 });
 
+
+/* Close with Escape key */
+
 document.addEventListener('keydown', function(event) {
+
     if (event.key === 'Escape') {
+
         lightbox.classList.remove('active');
+
+        lightboxImage.src = '';
+
     }
+
 });
+
 
 /* Initial setup */
 
