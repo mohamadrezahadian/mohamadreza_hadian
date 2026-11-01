@@ -11,6 +11,8 @@
   --bg: #101112;
   --fg: #eeeae4;
   --muted: #aaa8a3;
+  --line: #292a2a;
+  --surface: #1a1b1c;
 }
 
 * {
@@ -64,18 +66,11 @@ header {
   opacity: .8;
 }
 
-.nav button {
-  background: none;
-  border: 1px solid #777;
-  color: var(--fg);
-  padding: 8px 12px;
-  cursor: pointer;
-}
-
+.nav button,
 .theme-switch {
   background: transparent;
-  color: inherit;
   border: 1px solid currentColor;
+  color: var(--fg);
   padding: 8px 12px;
   cursor: pointer;
 }
@@ -148,7 +143,7 @@ header {
 
 section {
   padding: 100px 9%;
-  border-top: 1px solid #292a2a;
+  border-top: 1px solid var(--line);
 }
 
 section h2 {
@@ -165,7 +160,7 @@ section h2 {
   gap: 24px;
 }
 
-/* FIRST PROJECT - IMAGE CARD */
+/* FIRST PROJECT */
 
 .card {
   position: relative;
@@ -175,7 +170,7 @@ section h2 {
   flex-direction: column;
   justify-content: flex-end;
   padding: 36px;
-  background: #1a1b1c;
+  background: var(--surface);
   isolation: isolate;
 }
 
@@ -243,7 +238,7 @@ section h2 {
 /* SECOND PROJECT */
 
 .card.coming-soon {
-  background: #1a1b1c;
+  background: var(--surface);
   cursor: default;
   min-height: 420px;
   justify-content: flex-end;
@@ -265,6 +260,53 @@ section h2 {
   line-height: 2.4;
 }
 
+.about p {
+  margin: 0 0 24px;
+}
+
+.about p:last-child {
+  margin-bottom: 0;
+}
+
+/* CONTACT */
+
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 22px;
+  max-width: 650px;
+}
+
+.contact-item {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  transition: opacity .3s;
+}
+
+.contact-item:hover {
+  opacity: .65;
+}
+
+.contact-label {
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.contact-value {
+  font-size: 15px;
+  line-height: 1.8;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+body.en .contact-links {
+  align-items: flex-start;
+}
+
 /* FOOTER */
 
 footer {
@@ -283,6 +325,9 @@ body.en {
 
 body.en .hero h1 {
   letter-spacing: -4px;
+  font-size: clamp(40px, 5.5vw, 86px);
+  line-height: 1.08;
+  overflow-wrap: anywhere;
 }
 
 body:not(.en) .hero h1 {
@@ -292,22 +337,25 @@ body:not(.en) .hero h1 {
   font-size: clamp(40px, 5.5vw, 78px);
 }
 
-body.en .hero h1 {
-  font-size: clamp(40px, 5.5vw, 86px);
-  line-height: 1.08;
-  overflow-wrap: anywhere;
-}
-
 /* LIGHT MODE */
 
 body.light {
   --bg: #f4f3ef;
   --fg: #161616;
-  --muted: #555;
+  --muted: #666;
+  --line: #d9d7d1;
+  --surface: #e6e5e0;
+}
+
+body.light .subtitle {
+  color: #555;
+}
+
+body.light .about {
+  color: #444;
 }
 
 body.light .card.coming-soon {
-  background: #e6e5e0;
   color: #161616;
 }
 
@@ -322,6 +370,10 @@ body.light .card.coming-soon strong {
 
   header {
     padding: 25px 6%;
+  }
+
+  .brand {
+    font-size: 15px;
   }
 
   .nav {
@@ -381,24 +433,40 @@ body.light .card.coming-soon strong {
     transform: none;
   }
 }
-
 </style>
 </head>
 
 <body>
 
 <header>
+
   <a class="brand"
-     data-en="Mohammadreza Hadian"
+     data-en="Mohammad Reza Hadian"
      data-fa="محمدرضا هادیان"
-     href="#">محمدرضا هادیان</a>
+     href="#">
+    محمدرضا هادیان
+  </a>
 
   <nav class="nav">
+
     <a data-en="Works" data-fa="آثار" href="#works">آثار</a>
+
     <a data-en="About" data-fa="درباره من" href="#about">درباره من</a>
+
     <a data-en="Contact" data-fa="ارتباط" href="#contact">ارتباط</a>
-    <button id="lang">EN</button>
+
+    <button id="lang" type="button">EN</button>
+
+    <button
+      id="themeSwitch"
+      class="theme-switch"
+      type="button"
+      aria-label="Toggle light and dark theme">
+      ☀
+    </button>
+
   </nav>
+
 </header>
 
 <main>
@@ -408,8 +476,9 @@ body.light .card.coming-soon strong {
   <div class="hero">
 
     <div class="portrait">
+
       <img
-        alt="محمدرضا هادیان / Mohammadreza Hadian"
+        alt="Mohammad Reza Hadian"
         onerror="this.style.display='none';this.nextElementSibling.style.display='block'"
         src="file_000000008a7071f4bcebba2f5c68f4d1%20copy.jpg"
       />
@@ -418,16 +487,20 @@ body.light .card.coming-soon strong {
            data-en="Your black-and-white portrait&lt;br&gt;Place a file named portrait.jpg beside this page."
            data-fa="جای پرتره سیاه‌وسفید شما&lt;br&gt;فایل عکس را با نام portrait.jpg کنار این صفحه قرار دهید."
            style="display:none">
+
         جای پرتره سیاه‌وسفید شما<br/>
         فایل عکس را با نام portrait.jpg کنار این صفحه قرار دهید.
+
       </div>
+
     </div>
 
     <div>
+
       <div class="eyebrow">PHOTOGRAPHY · VISUAL ART</div>
 
       <h1
-        data-en="Mohammadreza&lt;br&gt;Hadian"
+        data-en="Mohammad Reza&lt;br&gt;Hadian"
         data-fa="محمدرضا&lt;br&gt;هادیان">
         محمدرضا<br/>هادیان
       </h1>
@@ -435,12 +508,15 @@ body.light .card.coming-soon strong {
       <p class="subtitle"
          data-en="Photographer &amp; Visual Artist"
          data-fa="عکاس و هنرمند بصری">
+
         عکاس و هنرمند بصری
+
       </p>
 
       <a class="scroll" href="#works">
         SCROLL TO EXPLORE ↓
       </a>
+
     </div>
 
   </div>
@@ -524,11 +600,33 @@ body.light .card.coming-soon strong {
       درباره من
     </h2>
 
-    <p class="about"
-       data-en="This space will introduce my artistic journey, experience, and approach to photography. Full biography coming soon."
-       data-fa="این بخش به معرفی مسیر هنری، سوابق و نگاه من به عکاسی اختصاص دارد. متن نهایی بعداً اضافه می‌شود.">
-      این بخش به معرفی مسیر هنری، سوابق و نگاه من به عکاسی اختصاص دارد. متن نهایی بعداً اضافه می‌شود.
-    </p>
+    <div class="about">
+
+      <p
+        data-en="Photography began for me at a point when nothing else could engage my mind and artistic sensibility in the way I was looking for. Through photography, I found a way to see, discover, and express—to experience the world through my own perspective and to reveal something of myself within the image."
+        data-fa="عکاسی برای من از جایی آغاز شد که هیچ چیز دیگری نمی‌توانست ذهن و روحیه‌ی هنری‌ام را آن‌گونه که می‌خواستم درگیر کند. در عکاسی امکانی پیدا کردم برای دیدن، کشف‌کردن و بیان‌کردن؛ امکانی برای آن‌که جهان را از زاویه‌ی نگاه خودم ببینم و بخشی از خودم را در تصویر به نمایش بگذارم.">
+
+        عکاسی برای من از جایی آغاز شد که هیچ چیز دیگری نمی‌توانست ذهن و روحیه‌ی هنری‌ام را آن‌گونه که می‌خواستم درگیر کند. در عکاسی امکانی پیدا کردم برای دیدن، کشف‌کردن و بیان‌کردن؛ امکانی برای آن‌که جهان را از زاویه‌ی نگاه خودم ببینم و بخشی از خودم را در تصویر به نمایش بگذارم.
+
+      </p>
+
+      <p
+        data-en="I have not yet fully found my place in photography, and perhaps this search is an essential part of my journey. I am searching for a personal gaze—one that can transform even an ordinary subject into something unexpected and personal. For me, a photograph is more than the recording of a moment; it can hold an emotion, a memory, an experience, or a narrative that takes on a fuller meaning when placed alongside other images."
+        data-fa="هنوز خودم را به معنای کامل در عکاسی پیدا نکرده‌ام و شاید همین جست‌وجو، بخش مهمی از مسیر من باشد. به دنبال نگاهی شخصی هستم؛ نگاهی که بتواند حتی از یک موضوع ساده، روایتی متفاوت بسازد. برای من، عکس فقط ثبت یک لحظه نیست؛ می‌تواند حامل یک احساس، یک خاطره، یک تجربه یا روایتی باشد که در کنار عکس‌های دیگر، شکل کامل‌تری پیدا می‌کند.">
+
+        هنوز خودم را به معنای کامل در عکاسی پیدا نکرده‌ام و شاید همین جست‌وجو، بخش مهمی از مسیر من باشد. به دنبال نگاهی شخصی هستم؛ نگاهی که بتواند حتی از یک موضوع ساده، روایتی متفاوت بسازد. برای من، عکس فقط ثبت یک لحظه نیست؛ می‌تواند حامل یک احساس، یک خاطره، یک تجربه یا روایتی باشد که در کنار عکس‌های دیگر، شکل کامل‌تری پیدا می‌کند.
+
+      </p>
+
+      <p
+        data-en="I am drawn to narrative and its openness to interpretation—to the possibility that an image originating from my perspective can take on a different meaning in the mind of each viewer. Ultimately, photography is a way for me to hold time, express my inner world, and come to know myself through my encounter with the world."
+        data-fa="به روایت و امکان‌های باز آن علاقه‌مندم؛ به این‌که تصویری که از نگاه من آغاز شده است، در ذهن هر مخاطب بتواند معنای دیگری پیدا کند. عکاسی برای من، در نهایت، راهی است برای ثبت زمان، بیان درونیات و شناختن خودم در مواجهه با جهان.">
+
+        به روایت و امکان‌های باز آن علاقه‌مندم؛ به این‌که تصویری که از نگاه من آغاز شده است، در ذهن هر مخاطب بتواند معنای دیگری پیدا کند. عکاسی برای من، در نهایت، راهی است برای ثبت زمان، بیان درونیات و شناختن خودم در مواجهه با جهان.
+
+      </p>
+
+    </div>
 
   </section>
 
@@ -543,11 +641,75 @@ body.light .card.coming-soon strong {
       ارتباط
     </h2>
 
-    <p class="about"
-       data-en="Contact and collaboration details coming soon."
-       data-fa="راه‌های ارتباطی و همکاری به‌زودی اضافه می‌شوند.">
-      راه‌های ارتباطی و همکاری به‌زودی اضافه می‌شوند.
-    </p>
+    <div class="contact-links">
+
+      <a class="contact-item"
+         href="mailto:mohamadhadian.photo@gmail.com">
+
+        <span class="contact-label"
+              data-en="Email"
+              data-fa="ایمیل">
+          ایمیل
+        </span>
+
+        <span class="contact-value">
+          mohamadhadian.photo@gmail.com
+        </span>
+
+      </a>
+
+      <a class="contact-item"
+         href="https://www.instagram.com/mohamadhadian.photo/"
+         target="_blank"
+         rel="noopener noreferrer">
+
+        <span class="contact-label"
+              data-en="Instagram"
+              data-fa="اینستاگرام">
+          اینستاگرام
+        </span>
+
+        <span class="contact-value">
+          @mohamadhadian.photo
+        </span>
+
+      </a>
+
+      <a class="contact-item"
+         href="https://t.me/mohamadhadian_photo1"
+         target="_blank"
+         rel="noopener noreferrer">
+
+        <span class="contact-label"
+              data-en="Personal Telegram"
+              data-fa="تلگرام شخصی">
+          تلگرام شخصی
+        </span>
+
+        <span class="contact-value">
+          @mohamadhadian_photo1
+        </span>
+
+      </a>
+
+      <a class="contact-item"
+         href="https://t.me/mohamadhadian_photo"
+         target="_blank"
+         rel="noopener noreferrer">
+
+        <span class="contact-label"
+              data-en="Photography Channel"
+              data-fa="کانال عکاسی تلگرام">
+          کانال عکاسی تلگرام
+        </span>
+
+        <span class="contact-value">
+          @mohamadhadian_photo
+        </span>
+
+      </a>
+
+    </div>
 
   </section>
 
@@ -556,13 +718,15 @@ body.light .card.coming-soon strong {
 <!-- FOOTER -->
 
 <footer>
+
   <span
-    data-en="© 2026 Mohammadreza Hadian"
+    data-en="© 2026 Mohammad Reza Hadian"
     data-fa="© ۲۰۲۶ محمدرضا هادیان">
     © ۲۰۲۶ محمدرضا هادیان
   </span>
 
   <span>FA / EN</span>
+
 </footer>
 
 <!-- LANGUAGE SWITCH -->
@@ -584,7 +748,7 @@ document.getElementById('lang').onclick = () => {
     en ? 'FA' : 'EN';
 
   document.title = en
-    ? 'Mohammadreza Hadian — Photography'
+    ? 'Mohammad Reza Hadian — Photography'
     : 'محمدرضا هادیان — عکاسی';
 
   document.querySelectorAll('[data-fa]').forEach(el => {
@@ -599,33 +763,21 @@ document.getElementById('lang').onclick = () => {
 
   const saved = localStorage.getItem('hadian-theme');
 
+  const btn = document.getElementById('themeSwitch');
+
   function setTheme(t){
 
     document.body.classList.toggle('light', t === 'light');
 
     localStorage.setItem('hadian-theme', t);
 
-    document.getElementById('themeSwitch').textContent =
+    btn.textContent =
       t === 'light' ? '☾' : '☀';
 
-    document.getElementById('themeSwitch').title =
+    btn.title =
       t === 'light' ? 'Dark mode' : 'Light mode';
 
   }
-
-  const btn = document.createElement('button');
-
-  btn.id = 'themeSwitch';
-  btn.className = 'theme-switch';
-
-  btn.setAttribute(
-    'aria-label',
-    'Toggle light and dark theme'
-  );
-
-  const header = document.querySelector('header');
-
-  header.appendChild(btn);
 
   btn.onclick = () => {
 
