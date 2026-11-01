@@ -116,12 +116,6 @@ h1 {
     opacity: .92;
 }
 
-/* Image loading error */
-
-.photo.image-error {
-    display: none;
-}
-
 /* Lightbox */
 
 .lightbox {
@@ -169,7 +163,6 @@ footer {
 /* Mobile */
 
 @media (max-width: 700px) {
-
     header {
         padding: 18px 5%;
     }
@@ -203,14 +196,11 @@ footer {
 
 <header>
 
-    <a href="../../index.html" id="back"></a>
+    <a href="index.html" id="back"></a>
 
     <div class="controls">
-
         <button id="theme" type="button"></button>
-
         <button id="lang" type="button">EN</button>
-
     </div>
 
 </header>
@@ -254,7 +244,6 @@ let en = false;
 /* Persian content */
 
 const fa = {
-
     back: '← بازگشت به صفحه اصلی',
 
     title: 'آنچه بیرون قاب ماند',
@@ -262,13 +251,11 @@ const fa = {
     desc: 'این مجموعه میان مشاهده و تفسیر حرکت می‌کند؛ جایی که تصویر اطلاعاتی ناقص در اختیار ما می‌گذارد و ذهن، فاصله‌های میان آن‌ها را با داستان پر می‌کند. آنچه دیده نمی‌شود، شاید مهم‌ترین بخش روایت باشد؛ روایتی که در پایان تنها ردی از آن باقی می‌ماند، بی‌آنکه مبدأ یا مقصدش روشن باشد.',
 
     foot: '© ۲۰۲۶ محمدرضا هادیان'
-
 };
 
 /* English content */
 
 const eng = {
-
     back: '← Back to home',
 
     title: 'What Remained Outside the Frame',
@@ -276,27 +263,17 @@ const eng = {
     desc: 'This series moves between observation and interpretation, where the image offers incomplete information and the mind fills the gaps with a story. What remains unseen may be the most significant part of the narrative; in the end, only a trace remains, its origin and destination equally uncertain.',
 
     foot: '© 2026 Mohammadreza Hadian'
-
 };
+
+
+/* IMAGE PATH */
+
+const imageFolder = 'images/outside-the-frame/';
 
 
 /* Generate 20 photographs */
 
 const gallery = document.getElementById('gallery');
-
-/*
-IMPORTANT:
-Image folder:
-images/outside-the-frame/
-
-File names:
-1.jpg to 20.jpg
-
-The page is assumed to be two folders
-below the project root.
-*/
-
-const imageFolder = '../../images/outside-the-frame/';
 
 for (let i = 1; i <= 20; i++) {
 
@@ -318,19 +295,23 @@ for (let i = 1; i <= 20; i++) {
 
     img.addEventListener('click', function() {
 
-        document.getElementById('lightboxImage').src = this.src;
+        const lightbox = document.getElementById('lightbox');
 
-        document.getElementById('lightbox').classList.add('active');
+        const lightboxImage = document.getElementById('lightboxImage');
+
+        lightboxImage.src = this.src;
+
+        lightboxImage.alt = this.alt;
+
+        lightbox.classList.add('active');
 
     });
 
-    /* Handle missing images */
+    /* Report missing image */
 
     img.addEventListener('error', function() {
 
         console.error('Image not found:', this.src);
-
-        figure.classList.add('image-error');
 
     });
 
